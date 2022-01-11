@@ -11,13 +11,14 @@ $lots = [['title' => '2014 Rossignol District Snowboard', 'categories' => 'До�
 ['title' => 'Куртка для сноуборда DC Mutiny Charocal', 'categories' => 'Одежда', 'cost' => 7500, 'url' => 'img/lot-5.jpg'],
 ['title' => 'Маска Oakley Canopy', 'categories' => 'Разное', 'cost' => 5400, 'url' => 'img/lot-6.jpg']];
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Главная</title>
-    <link href="../css/normalize.min.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
+    <link href="css/normalize.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 <div class="page-wrapper">
@@ -90,7 +91,7 @@ $lots = [['title' => '2014 Rossignol District Snowboard', 'categories' => 'До�
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?php lot_cost($lot['cost']); ?><b class="rub">р</b></span>
+                            <span class="lot__cost"><?= $lot['cost']; ?><b class="rub">р</b></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23
