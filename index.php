@@ -3,7 +3,7 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Александр'; // укажите здесь ваше имя
 
-$categories = ['boards' => 'Доски и лыжи', 'attachment' => 'Крепления', 'boots' => 'Ботинки', 'clothing' => 'Одежда', 'tools' => 'Инструменты', 'other' => 'Разное'];
+$categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 $lots = [['title' => '2014 Rossignol District Snowboard', 'categories' => 'Доски и лыжи', 'cost' => 10999, 'url' => 'img/lot-1.jpg'],
 ['title' => 'DC Ply Mens 2016/2017 Snowboard', 'categories' => 'Доски и лыжи', 'cost' => 15999, 'url' => 'img/lot-2.jpg'],
 ['title' => 'Крепления Union Contact Pro 2015 года размер L/XL', 'categories' => 'Крепления', 'cost' => 8000, 'url' => 'img/lot-3.jpg'],
