@@ -10,6 +10,11 @@ $lots = [['title' => '2014 Rossignol District Snowboard', 'categories' => 'До�
 ['title' => 'Ботинки для сноуборда DC Mutiny Charocal', 'categories' => 'Ботинки', 'cost' => 10999, 'url' => 'img/lot-4.jpg'],
 ['title' => 'Куртка для сноуборда DC Mutiny Charocal', 'categories' => 'Одежда', 'cost' => 7500, 'url' => 'img/lot-5.jpg'],
 ['title' => 'Маска Oakley Canopy', 'categories' => 'Разное', 'cost' => 5400, 'url' => 'img/lot-6.jpg']];
+
+function price_format($price) {
+    $price_tag = number_format(ceil($price), 0, '', ' ') . ' ₽';
+    return $price_tag;
+}
 ?>
 
 <!DOCTYPE html>
@@ -78,10 +83,8 @@ $lots = [['title' => '2014 Rossignol District Snowboard', 'categories' => 'До�
             <h2>Открытые лоты</h2>
         </div>
         <ul class="lots__list">
-            <!--заполните этот список из массива с товарами-->
+        <?php foreach ($lots as $lot): ?>
             <li class="lots__item lot">
-                <?php
-                foreach ($lots as $lot): ?>
                     <div class="lot__image">
                     <img src="<?= $lot['url'];?>" width="350" height="260" alt="">
                 </div>
@@ -91,15 +94,16 @@ $lots = [['title' => '2014 Rossignol District Snowboard', 'categories' => 'До�
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?= $lot['cost']; ?><b class="rub">р</b></span>
+                            <span class="lot__cost"><?= price_format($lot['cost']); ?></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23
                         </div>
                     </div>
                 </div>
-                <?php endforeach; ?>
             </li>
+        <?php endforeach; ?>
+
         </ul>
     </section>
 </main>
