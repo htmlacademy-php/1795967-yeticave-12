@@ -12,10 +12,10 @@ $lots = [['title' => '2014 Rossignol District Snowboard', 'categories' => 'До�
     ['title' => 'Куртка для сноуборда DC Mutiny Charocal', 'categories' => 'Одежда', 'cost' => 7500, 'url' => 'img/lot-5.jpg', 'finish_date' => '2022-03-28'],
     ['title' => 'Маска Oakley Canopy', 'categories' => 'Разное', 'cost' => 5400, 'url' => 'img/lot-6.jpg', 'finish_date' => '2022-03-29']];
 
-function get_dt_range($finish_date): array
+function timeLeft($finish_date): string
 {
     $diff = strtotime($finish_date) - strtotime("now");
-    return [str_pad(floor($diff / 3600), 2, "0", STR_PAD_LEFT), str_pad(floor(($diff % 3600) / 60), 2, "0", STR_PAD_LEFT)];
+    return implode(':', [str_pad(floor($diff / 3600), 2, "0", STR_PAD_LEFT), str_pad(floor(($diff % 3600) / 60), 2, "0", STR_PAD_LEFT)]);
 }
 
 function price_format($price): string
