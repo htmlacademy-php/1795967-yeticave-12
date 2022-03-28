@@ -1,3 +1,9 @@
+<?php
+/** @var array $categories
+ *@var array $lots
+ *@var string $currentDate
+ */
+?>
 <section class="promo">
     <h2 class="promo__title">Нужен стафф для катки?</h2>
     <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное
@@ -29,10 +35,13 @@
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?= price_format($lot['cost']); ?></span>
+                            <span class="lot__cost"><?= priceFormat($lot['cost']); ?></span>
                         </div>
-                        <div class="lot__timer timer">
-                            12:23
+
+                        <?php $timeLeft = timeLeft($lot['finishDate'], $currentDate); ?>
+                        <div
+                            class="lot__timer timer <?php if ((int)$timeLeft[0] < 1): ?>  timer--finishing <?php endif; ?> ">
+                            <?= implode(':',timeLeft($lot['finishDate'], $currentDate)); ?>
                         </div>
                     </div>
                 </div>
