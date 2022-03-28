@@ -4,7 +4,7 @@ require_once __DIR__ . '/bootstrap.php';
 $isAuth = rand(0, 1);
 $pageTitle = 'Главная';
 $userName = 'Александр';
-$currentDate = '2022-03-25 23:25';
+$currentDate = date('Y-m-d H:i:s');
 
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 
