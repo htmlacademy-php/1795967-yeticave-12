@@ -3,7 +3,8 @@ DATABASE yeticave_67
 	DEFAULT CHARACTER SET utf8
 	DEFAULT COLLATE utf8_general_ci;
 
-USE yeticave_67;
+USE
+yeticave_67;
 
 CREATE TABLE users
 (
@@ -12,7 +13,7 @@ CREATE TABLE users
   email       VARCHAR(256) NOT NULL UNIQUE,
   name        VARCHAR(128) NOT NULL,
   password    VARCHAR(128) NOT NULL,
-  message     TEXT
+  contact     VARCHAR(256)
 );
 
 CREATE TABLE categories
@@ -26,12 +27,12 @@ CREATE TABLE lots
 (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   create_data DATETIME DEFAULT CURRENT_TIMESTAMP,
-  title       TEXT NOT NULL,
-  description TEXT NOT NULL,
-  path        TEXT,
-  price       INT  NOT NULL,
+  title       VARCHAR(128) NOT NULL,
+  description TEXT         NOT NULL,
+  url_image   VARCHAR(128),
+  price        INT          NOT NULL,
   finish_date DATETIME,
-  step        INT  NOT NULL,
+  step        INT          NOT NULL,
   user_id     INT,
   winner_id   INT,
   category_id INT,
@@ -44,7 +45,7 @@ CREATE TABLE bets
 (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   create_data DATETIME DEFAULT CURRENT_TIMESTAMP,
-  bet         INT NOT NULL,
+  price  INT NOT NULL,
   user_id     INT,
   lot_id      INT,
   FOREIGN KEY (user_id) REFERENCES users (id),
