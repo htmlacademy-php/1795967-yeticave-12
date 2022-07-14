@@ -1,15 +1,14 @@
 <?php
 /** @var mysqli $link */
+/** @var array $config */
 
 require_once __DIR__ . '/bootstrap.php';
 
-$config = require 'config.php';
 $isAuth = rand(0, 1);
 $pageTitle = 'Главная';
 $userName = 'Александр';
 $currentDate = date('Y-m-d H:i:s');
 
-$link = dbConnect($config['db']);
 
 $categories = getCategories($link);
 
@@ -28,8 +27,12 @@ $layoutContent = includeTemplate
 (
     'layout.php',
     [
-        'categories' => $categories, 'lots' => $lots, 'pageTitle' => $pageTitle,
-        'isAuth' => $isAuth, 'userName' => $userName, 'pageContent' => $pageContent
+        'categories' => $categories,
+        'lots' => $lots,
+        'pageTitle' => $pageTitle,
+        'isAuth' => $isAuth,
+        'userName' => $userName,
+        'pageContent' => $pageContent
     ]
 );
 print($layoutContent);
