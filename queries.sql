@@ -59,7 +59,7 @@ LIMIT 3;
 
 # показать лот по его ID. Получите также название категории, к которой принадлежит лот;
 
-SELECT l.date_create, l.title, l.image, l.price, c.name AS category
+SELECT l.date_create, l.title, l.image, l.price, c.name AS categorylo
 FROM lots l
        JOIN categories c ON l.category_id = c.id
 WHERE l.id = 4;
