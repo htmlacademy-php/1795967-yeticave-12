@@ -11,7 +11,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title><?= $pageTitle; ?></title>
+    <title><?= $pageTitle ?></title>
     <link href="../css/normalize.min.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
 </head>
@@ -21,7 +21,7 @@
     <header class="main-header">
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
-            <a class="main-header__logo">
+            <a class="main-header__logo" href="/index.php">
                 <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
             <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru" autocomplete="off">
@@ -35,7 +35,7 @@
             <nav class="user-menu">
                 <?php if ($isAuth === 1) : ?>
                     <div class="user-menu__logged">
-                        <p><?= $userName; ?></p>
+                        <p><?= $userName ?></p>
                         <a class="user-menu__bets" href="../pages/my-bets.html">Мои ставки</a>
                         <a class="user-menu__logout" href="#">Выход</a>
                     </div>
@@ -56,7 +56,7 @@
         </div>
     </header>
 
-    <main class="container"><?= $pageContent; ?></main>
+    <main class="container"><?= $pageContent ?></main>
 </div>
 
 <footer class="main-footer">
@@ -65,7 +65,7 @@
             <!--заполните этот список из массива категорий-->
             <?php foreach($categories as $category): ?>
                 <li class="nav__item">
-                    <a href="../pages/all-lots.html"><?= htmlspecialchars($category['name']); ?></a>
+                    <a href="../pages/all-lots.html"><?= htmlspecialchars($category['name']) ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
