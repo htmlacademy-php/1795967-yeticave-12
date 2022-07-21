@@ -51,15 +51,16 @@ LIMIT 8";
     }
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
 /**
  * Получение одного лота по id
  * @param mysqli $link объект подключения к базе данных
- * @return array
+ * @param int $id
+ * @return ?array
  */
 
-function getLot(mysqli $link): array
+function getLot(mysqli $link, int $id): ?array
 {
-    $id = (int)$_GET["id"];
     $sql = "SELECT l.*, c.name AS category
 FROM lots l
        JOIN categories c ON l.category_id = c.id
@@ -68,7 +69,7 @@ WHERE l.id = $id";
     if (!$result) {
         dbError($link);
     }
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return mysqli_fetch_assoc($result);
 }
 
 
