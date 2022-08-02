@@ -2,32 +2,19 @@
 require_once __DIR__ . '/bootstrap.php';
 require_once __DIR__ . '/functions/date.php';
 
-/** @var mysqli $link
- * @var string $currentDate
- */
-
 /** @var array $categories */
 /** @var array $lots */
 /** @var string $pageTitle */
 /** @var int $isAuth */
 /** @var string $userName */
 
-$id = $_GET['id'] ?? null;
 
-if (empty($id)) {
-    error(404, 'Лот не найден');
-}
-$lot = getLot($link, $id);
-if (empty($lot)) {
-    error(404, 'Лот не найден');
-}
 
 $pageContent = includeTemplate
 (
-    'lot.php',
-    ['lot'=>$lot]
+    'add-lot.php',
+    ['categories' => $categories]
 );
-
 
 $layoutContent = includeTemplate
 (
@@ -42,5 +29,6 @@ $layoutContent = includeTemplate
     ]
 );
 print($layoutContent);
+
 
 
