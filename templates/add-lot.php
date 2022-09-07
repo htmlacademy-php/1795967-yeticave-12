@@ -1,5 +1,7 @@
 <?php
 /** @var array $categories */
+/** @var array $errors */
+/** @var array $formData */
 
 ?>
 <nav class="nav">
@@ -14,19 +16,19 @@
     <form class="form form--add-lot container form--invalid" action="../add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
       <h2>Добавление лота</h2>
       <div class="form__container-two">
-        <div class="form__item form__item--invalid"> <!-- form__item--invalid -->
+        <div class="form__item <?= isset($errors['title']) ? 'form__item--invalid': ''?>"> <!-- form__item--invalid -->
           <label for="lot-name">Наименование <sup>*</sup></label>
-          <input id="lot-name" type="text" name="title" placeholder="Введите наименование лота">
-          <span class="form__error">Введите наименование лота</span>
+          <input id="lot-name" type="text" name="title" placeholder="Введите наименование лота" value="<?= $formData['title'] ?? ''?>">
+          <span class="form__error"><?= $errors['title'] ?? '' ?></span>
         </div>
         <div class="form__item">
           <label for="category">Категория <sup>*</sup></label>
 
-          <select id="category" name="category">
+          <select id="category" name="name">
 
             <option>Выберите категорию</option>
               <?php foreach ($categories as $category): ?>
-            <option><?= htmlspecialchars($category['name']) ?></option>
+            <option <?php if($category['name'] === $formData['name']): ?>selected<?php endif; ?> value="<?= $category['name'] ?>"><?= $category['name'] ?></option>
               <?php endforeach; ?>
           </select>
           <span class="form__error">Выберите категорию</span>
@@ -34,7 +36,7 @@
       </div>
       <div class="form__item form__item--wide">
         <label for="message">Описание <sup>*</sup></label>
-        <textarea id="message" name="description" placeholder="Напишите описание лота"></textarea>
+        <textarea id="message" name="description" placeholder="Напишите описание лота" ><?= $formData['description'] ?? ''?></textarea>
         <span class="form__error">Напишите описание лота</span>
       </div>
       <div class="form__item form__item--file">

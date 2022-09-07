@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
-require_once __DIR__ . '/functions/date.php';
+//require_once __DIR__ . '/functions/date.php';
 
 /** @var mysqli $link */
 /** @var array $config */
