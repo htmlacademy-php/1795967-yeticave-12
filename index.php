@@ -1,34 +1,51 @@
 <?php
+
+/**
+ * @var $link
+ * @var $config
+ * @var $pageTitle
+ * @var $userName
+ * @var $categories
+ * @var $lots
+ * @var $promoMenu
+ * @var $menu
+ * @var $lotsPerPage
+ */
+
 require_once __DIR__ . '/bootstrap.php';
-//require_once __DIR__ . '/functions/date.php';
+require_once __DIR__ . '/get-winner.php';
 
-/** @var mysqli $link */
-/** @var array $config */
-/** @var string $pageTitle */
-/** @var int $isAuth */
-/** @var string $userName */
-/** @var array $categories */
-/** @var array $lots */
+$lotsPerPage = $config['pagination']['mainLotsPage'];
 
-$currentDate = date('Y-m-d H:i:s');
+$currentPageNumber = getCurrentPageNumber($_GET);
+$itemsCount = getCountLotsOpened($link);
+$totalPagesCount = getTotalPagesCount($itemsCount, $lotsPerPage);
+$lots = getLots($link, $lotsPerPage, $currentPageNumber);
 
-$pageContent = includeTemplate
-(
-    'main.php',
-    ['categories' => $categories, 'lots' => $lots, 'currentDate' => $currentDate]
-);
+$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
+$promoMenu = includeTemplate('menu/promo_menu.php', ['categories' => $categories]);
+$lotsList = includeTemplate('lots-list.php', [
+    'lots'        => $lots,
+    'link'        => $link,
+]);
 
-$layoutContent = includeTemplate
-(
-    'layout.php',
-    [
-        'categories' => $categories,
-        'lots' => $lots,
-        'pageTitle' => $pageTitle,
-        'isAuth' => $isAuth,
-        'userName' => $userName,
-        'pageContent' => $pageContent
-    ]
-);
+$pagination = includeTemplate('pagination.php', [
+    'totalPagesCount' => $totalPagesCount,
+    'currentPageNumber' => $currentPageNumber,
+]);
+
+$pageContent = includeTemplate('main.php', [
+    'promoMenu' => $promoMenu,
+    'lotsList'    => $lotsList,
+    'pagination' => $pagination,
+]);
+
+$footer = includeTemplate('footer.php', ['categories' => $categories, 'menu' => $menu]);
+
+$layoutContent = includeTemplate('layout.php', [
+        'footer' => $footer,
+        'pageTitle'   => $pageTitle . ' | Главная',
+        'pageContent' => $pageContent,
+    ]);
 print($layoutContent);
 

@@ -1,4 +1,10 @@
 {
+  "authors": [
+    {
+      "name": "Aleksandr",
+      "email": "aleksder7708@yandex.ru"
+    }
+  ],
   "require-dev": {
     "phpunit/phpunit": "^9.5"
   },
@@ -7,6 +13,7 @@
   },
   "require": {
     "ext-mysqli": "*",
-    "ext-mbstring": "*"
+    "ext-mbstring": "*",
+    "symfony/mailer": "^6.2"
   }
 }

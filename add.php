@@ -1,43 +1,46 @@
 <?php
+
 require_once __DIR__ . '/bootstrap.php';
 
-/** @var array $categories */
-/** @var array $lots */
-/** @var string $pageTitle */
-/** @var int $isAuth */
-/** @var string $userName */
-/** @var mysqli $link */
+/** @var array $categories
+ * @var array $lots
+ * @var string $pageTitle
+ * @var string $userName
+ * @var mysqli $link
+ */
+
+$userId = getUserIdFromSession();
+
+$errors = [];
+$formData = [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formData = getLotFormData($_POST);
-    $errors = validateLotForm($formData, $categories, $link);
+    $errors = validateLotForm($formData, $_FILES);
+
+    if (empty($errors)) {
+        $formData['image'] = uploadFile($_FILES);
+        $formData['user_id'] = $userId;
+        $id = addLot($link, $formData);
+        header("Location: /lot.php?id=$id");
+        exit();
+    }
 }
+$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
 
-    var_dump($errors);
-    var_dump($formData);
+$pageContent = includeTemplate('add-lot.php', [
+    'categories' => $categories,
+    'errors'     => $errors,
+    'formData'   => $formData,
+]);
 
+$footer = includeTemplate('footer.php', ['menu' => $menu]);
 
-$pageContent = includeTemplate
-(
-    'add-lot.php',
-    ['categories' => $categories,
-     'errors'=> $errors ?? [],
-     'formData'=> $formData ?? [],
-    ]
-);
+$layoutContent = includeTemplate('layout.php', [
+    'menu'        => $menu,
+    'footer'      => $footer,
+    'pageTitle'   => $pageTitle . '| Добавить лот',
+    'pageContent' => $pageContent,
+]);
 
-$layoutContent = includeTemplate
-(
-    'layout.php',
-    [
-        'categories'  => $categories,
-        'lots'        => $lots,
-        'pageTitle'   => $pageTitle,
-        'isAuth'      => $isAuth,
-        'userName'    => $userName,
-        'pageContent' => $pageContent,
-    ]
-);
 print($layoutContent);
-
-
-

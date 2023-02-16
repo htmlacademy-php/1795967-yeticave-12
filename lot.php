@@ -1,46 +1,61 @@
 <?php
-require_once __DIR__ . '/bootstrap.php';
-require_once __DIR__ . '/functions/date.php';
 
-/** @var mysqli $link
- * @var string $currentDate
+/**
+ * @var mysqli $link
+ * @var string $error
+ * @var array $categories
+ * @var array $lots
+ * @var string $pageTitle
+ * @var string $userName
  */
 
-/** @var array $categories */
-/** @var array $lots */
-/** @var string $pageTitle */
-/** @var int $isAuth */
-/** @var string $userName */
+require_once __DIR__ . '/bootstrap.php';
 
-$id = $_GET['id'] ?? null;
-
-if (empty($id)) {
-    error(404, 'Лот не найден');
+if (!is_numeric($_GET['id'])) {
+    header('Location: /404.php');
+    exit();
 }
+
+$id = ($_GET['id']);
 $lot = getLot($link, $id);
-if (empty($lot)) {
-    error(404, 'Лот не найден');
+$error = '';
+
+if (empty($lot['id'])) {
+    header('Location: /404.php');
+    exit();
 }
 
-$pageContent = includeTemplate
-(
-    'lot.php',
-    ['lot'=>$lot]
-);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $formData = filterFormFields($_POST);
+    $error = validateBetForm($link, $formData['cost'], $lot);
+    if (empty($error)) {
+        addBet($link, $_SESSION['user']['id'], $formData['cost'], $lot['id']);
+        header('Location: /lot.php?id=' . $lot['id']);
+        exit();
+    }
+}
 
+$bets = getAllBetsOfLot($link, $lot['id']);
 
-$layoutContent = includeTemplate
-(
-    'layout.php',
-    [
-        'categories' => $categories,
-        'lots' => $lots,
-        'pageTitle' => $pageTitle,
-        'isAuth' => $isAuth,
-        'userName' => $userName,
-        'pageContent' => $pageContent
-    ]
-);
+$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
+
+$pageContent = includeTemplate('lot.php', [
+    'error'       => $error,
+    'link'        => $link,
+    'bets'        => $bets,
+    'lot'         => $lot,
+]);
+
+$footer = includeTemplate('footer.php', ['menu' => $menu]);
+
+$layoutContent = includeTemplate('layout.php', [
+    'menu'        => $menu,
+    'footer'      => $footer,
+    'categories'  => $categories,
+    'pageTitle'   => $pageTitle . ' | ' . $lot['title'],
+    'pageContent' => $pageContent,
+]);
+
 print($layoutContent);
 
 

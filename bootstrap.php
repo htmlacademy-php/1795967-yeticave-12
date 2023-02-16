@@ -1,19 +1,27 @@
 <?php
+
+const UPLOAD_DIR = __DIR__ . '/uploads';
+session_start();
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+date_default_timezone_set('Asia/Yekaterinburg');
+
 require_once __DIR__ . '/functions/validation.php';
+require_once __DIR__ . '/functions/file.php';
+require_once __DIR__ . '/functions/filters.php';
 require_once __DIR__ . '/functions/template.php';
 require_once __DIR__ . '/functions/db.php';
-require_once __DIR__ . '/functions/response.php';
-require_once __DIR__ . '/functions/request.php';
+require_once __DIR__ . '/functions/calc.php';
+require_once __DIR__ . '/functions/email.php';
 require_once __DIR__ . '/functions/validators/lot-validators.php';
+require_once __DIR__ . '/functions/validators/user-validators.php';
+require_once __DIR__ . '/functions/validators/bet-validators.php';
+
 $config = require __DIR__ . '/config.php';
 $link = dbConnect($config['db']);
-$currentDate = date('Y-m-d H:i:s');
-$isAuth = rand(0, 1);
-$pageTitle = 'Главная';
-$userName = 'Александр';
-$currentDate = date('Y-m-d H:i:s');
+$pageTitle = $config['main']['name'];
 $categories = getCategories($link);
-$lots = getLots($link);
+
 
