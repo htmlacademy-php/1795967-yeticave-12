@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formData = filterFormFields($_POST);
     $errors = validateLoginForm($link, $formData);
 $user = getUserByEmail($link, $formData['email']);
-var_dump($user);
+
     if (empty($errors)) {
         $_SESSION['user'] = getUserByEmail($link, $formData['email']);
         header('Location: /');

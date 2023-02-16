@@ -168,7 +168,7 @@ function validateLoginPassword(mysqli $link, string $email, string $password): ?
 
     $user = getUserByEmail($link, $email);
     if ($user) {
-        if (password_verify($password, $user['password'])) {
+        if (!password_verify($password, $user['password'])) {
             return 'Вы ввели неверный пароль';
         }
     }
