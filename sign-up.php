@@ -3,7 +3,6 @@
 require __DIR__ . '/bootstrap.php';
 
 /**
- * @var
  * @var array $categories
  * @var string $userName
  * @var string $pageTitle
@@ -29,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die();
     }
 }
+
 $menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
 
 $pageContent = includeTemplate('sign-up.php', [
