@@ -44,6 +44,8 @@ INSERT INTO bets
 VALUES ('2022-04-06', 11499, 2, 1),
        ('2022-04-06', 11999, 3, 1);
 
+
+
 # Получить все категории
 SELECT name
 FROM categories;
