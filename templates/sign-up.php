@@ -1,17 +1,15 @@
 <?php
+
 require_once __DIR__ . '/../bootstrap.php';
 
 /**
- * @var array $categories
- * @var array $formData
- * @var ?array $errors
+ * @var $categories
+ * @var $formData
+ * @var $errors
  */
 ?>
 
-
-
     <form class="form container <?= !empty($errors) ? 'form--invalid' : '' ?>" action="/sign-up.php" method="post" autocomplete="off">
-
         <h2>Регистрация нового аккаунта</h2>
 
         <div class="form__item <?= isset($errors['name']) ? 'form__item--invalid' : '' ?>">
