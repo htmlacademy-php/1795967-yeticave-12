@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__ . '/bootstrap.php';
-
 /**
  * @var array $categories
  * @var string $userName
@@ -9,6 +7,8 @@ require __DIR__ . '/bootstrap.php';
  * @var mysqli $link Ресурс соединения с базой данных
  * @var array $pageContent
  */
+
+require __DIR__ . '/bootstrap.php';
 
 if (isset($_SESSION['user'])) {
     header('Location: /403');

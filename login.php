@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/bootstrap.php';
-
 /**
  * @var array $categories
  * @var string $userName
@@ -10,6 +8,8 @@ require_once __DIR__ . '/bootstrap.php';
  * @var mysqli $link
  * @var string $pageTitle
  */
+
+require_once __DIR__ . '/bootstrap.php';
 
 $formData = [];
 $errors = [];
