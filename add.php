@@ -1,13 +1,13 @@
 <?php
 
-require_once __DIR__ . '/bootstrap.php';
-
 /** @var array $categories
  * @var array $lots
  * @var string $pageTitle
  * @var string $userName
  * @var mysqli $link
  */
+
+require_once __DIR__ . '/bootstrap.php';
 
 $userId = getUserIdFromSession();
 

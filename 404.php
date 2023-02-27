@@ -1,10 +1,12 @@
 <?php
 
-require_once __DIR__ . '/bootstrap.php';
+/**
+ * @var $categories
+ * @var $pageTitle
+ * @var $userName
+ */
 
-/** @var array $categories */
-/** @var string $pageTitle */
-/** @var string $userName */
+require_once __DIR__ . '/bootstrap.php';
 
 header("HTTP/1.1 404 Not Found");
 header("Status: 404 Not Found");
@@ -22,5 +24,3 @@ $layoutContent = includeTemplate('layout.php', [
     'pageContent' => $pageContent,
 ]);
 print($layoutContent);
-
-
