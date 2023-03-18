@@ -25,27 +25,27 @@ $lots = getLots($link, $lotsPerPage, $currentPageNumber);
 $menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
 $promoMenu = includeTemplate('menu/promo_menu.php', ['categories' => $categories]);
 $lotsList = includeTemplate('lots-list.php', [
-    'lots'        => $lots,
-    'link'        => $link,
+    'lots' => $lots,
+    'link' => $link,
 ]);
 
 $pagination = includeTemplate('pagination.php', [
-    'totalPagesCount' => $totalPagesCount,
+    'totalPagesCount'   => $totalPagesCount,
     'currentPageNumber' => $currentPageNumber,
 ]);
 
 $pageContent = includeTemplate('main.php', [
-    'promoMenu' => $promoMenu,
-    'lotsList'    => $lotsList,
+    'promoMenu'  => $promoMenu,
+    'lotsList'   => $lotsList,
     'pagination' => $pagination,
 ]);
 
 $footer = includeTemplate('footer.php', ['categories' => $categories, 'menu' => $menu]);
 
 $layoutContent = includeTemplate('layout.php', [
-        'footer' => $footer,
-        'pageTitle'   => $pageTitle . ' | Главная',
-        'pageContent' => $pageContent,
-    ]);
+    'footer'      => $footer,
+    'pageTitle'   => $pageTitle . ' | Главная',
+    'pageContent' => $pageContent,
+]);
 print($layoutContent);
 
