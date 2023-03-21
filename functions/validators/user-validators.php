@@ -50,7 +50,7 @@ function  validateRegistrationName(string $name): ?string
 function validateRegistrationEmail(mysqli $link, string $email): ?string
 {
     if (empty($email)) {
-        return 'Введите ващ email';
+        return 'Введите ваш email';
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -134,7 +134,7 @@ function validateLoginForm(mysqli $link, array $formData): ?array
 function validateLoginEmail(mysqli $link, string $email): ?string
 {
     if (empty($email)) {
-        return 'Введите ващ email';
+        return 'Введите ваш email';
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {

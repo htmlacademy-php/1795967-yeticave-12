@@ -19,8 +19,9 @@ function timeLeft(string $finishDate): array
 }
 
 /**
- * @param int $price
- * @return string
+ * Функция возвращает цену удобочитаемом формате
+ * @param int $price Цена лота
+ * @return string Строка в заданном формате
  */
 
 function priceFormat(int $price): string
@@ -76,7 +77,6 @@ function timerResult(string $finishDate, int $Id, ?int $winnerId): string
     return match (true) {
         $Id === $winnerId => 'Ставка выиграла',
         strtotime($finishDate) <= time() => 'Торги окончены',
-//        strtotime($finishDate) > time() => timeLeft($finishDate),
         default => implode(':', timeLeft($finishDate)),
     };
 }
@@ -123,7 +123,6 @@ function includeTemplate(string $name, array $data = []): string
 /**
  * Возвращает корректную форму множественного числа
  * Ограничения: только для целых чисел
- *
  * Пример использования:
  * $remaining_minutes = 5;
  * echo "Я поставил таймер на {$remaining_minutes} " .
@@ -160,7 +159,6 @@ function getNounPluralForm(int $number, string $one, string $two, string $many):
 /**
  * Функция отображения даты создания ставки в удобочитаемом формате
  * @param string $dateCreate Дата создания ставки
- *
  * @return string Возвращает отформатированную строку с датой
  */
 

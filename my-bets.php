@@ -12,7 +12,7 @@ require_once __DIR__ . '/bootstrap.php';
 $userId = getUserIdFromSession();
 $bets = getAllMyBets($link, $userId);
 
-$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
+$menu = includeTemplate('menu.php', ['categories' => $categories]);
 
 $pageContent = includeTemplate('my-bets.php', [
     'bets'   => $bets,

@@ -24,7 +24,7 @@ $totalPagesCount = getTotalPagesCount($itemsCount, $lotsPerPage);
 $lots = getLotsByCategory($link, $category, $lotsPerPage, $currentPageNumber);
 $getParam = '&id=' . $category;
 
-$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
+$menu = includeTemplate('menu.php', ['categories' => $categories]);
 
 $pagination = includeTemplate('pagination.php', [
     'lotsPerPage'       => $lotsPerPage,

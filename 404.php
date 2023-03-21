@@ -11,7 +11,7 @@ require_once __DIR__ . '/bootstrap.php';
 header("HTTP/1.1 404 Not Found");
 header("Status: 404 Not Found");
 
-$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
+$menu = includeTemplate('menu.php', ['categories' => $categories]);
 
 $pageContent = includeTemplate('404.php');
 

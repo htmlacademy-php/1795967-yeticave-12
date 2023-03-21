@@ -44,7 +44,7 @@ function filterSearchForm(array $data): string
 
 /**
  * Функция возвращает номер текущей страницы
- * @param array $data
+ * @param array $data Данные из GET параметров
  * @return int При отсутствии номера возвращает по умолчанию 1
  */
 

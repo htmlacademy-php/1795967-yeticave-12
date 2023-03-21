@@ -4,7 +4,6 @@
  * @var array $config
  * @var array $categories
  * @var string $pageTitle
- * @var string $userName
  * @var  mysqli $link
  */
 
@@ -28,7 +27,7 @@ if (!empty($search) && $itemsCount === 0) {
     $message = 'Ничего не найдено по запросу ';
 }
 
-$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
+$menu = includeTemplate('menu.php', ['categories' => $categories]);
 
 $pagination = includeTemplate('pagination.php', [
     'lotsPerPage'       => $lotsPerPage,
@@ -54,7 +53,6 @@ $layoutContent = includeTemplate('layout.php', [
     'footer'      => $footer,
     'categories'  => $categories,
     'pageTitle'   => $pageTitle,
-    'userName'    => $userName,
     'pageContent' => $pageContent,
 ]);
 

@@ -22,8 +22,8 @@ $itemsCount = getCountLotsOpened($link);
 $totalPagesCount = getTotalPagesCount($itemsCount, $lotsPerPage);
 $lots = getLots($link, $lotsPerPage, $currentPageNumber);
 
-$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
-$promoMenu = includeTemplate('menu/promo_menu.php', ['categories' => $categories]);
+$menu = includeTemplate('menu.php', ['categories' => $categories]);
+$promoMenu = includeTemplate('promo_menu.php', ['categories' => $categories]);
 $lotsList = includeTemplate('lots-list.php', [
     'lots'        => $lots,
     'link'        => $link,

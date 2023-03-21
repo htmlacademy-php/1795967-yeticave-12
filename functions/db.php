@@ -123,9 +123,9 @@ function getCategoryNameById(mysqli $link, int $id): string
 /**
  * Получение списка лотов
  * @param mysqli $link Ресурс соединения с базой данных
- * @var int $lotsPerPage
- * @var int $currentPageNumber
- * @return array
+ * @var int $lotsPerPage Количество лотов на странице
+ * @var int $currentPageNumber Номер текущей страницы
+ * @return array Возвращает список лотов
  */
 
 function getLots(mysqli $link, int $lotsPerPage, int $currentPageNumber): array
@@ -153,8 +153,8 @@ function getLots(mysqli $link, int $lotsPerPage, int $currentPageNumber): array
 /**
  * Получение одного лота по id
  * @param mysqli $link Объект подключения к базе данных
- * @param int $id
- * @return ?array
+ * @param int $id Идентификатор лота
+ * @return ?array Массив данных лота, при отсутствии null
  */
 
 function getLot(mysqli $link, int $id): ?array
@@ -201,9 +201,9 @@ function addUser(mysqli $link, array $formData): void
 
 /**
  * Функция определяет победителя лота
- * @param mysqli $link
- * @param int $user_id
- * @param int $lot_id
+ * @param mysqli $link Ресурс соединения с базой данных
+ * @param int $user_id Идентификатор пользователя
+ * @param int $lot_id Идентификатор лота
  * @return array|null Возвращает массив с данными о победителе или null
  */
 function getUserWinner(mysqli $link, int $user_id, int $lot_id): ?array
@@ -218,7 +218,7 @@ function getUserWinner(mysqli $link, int $user_id, int $lot_id): ?array
 /**
  * Функция возвращает истекшие лоты без победителя
  * @param mysqli $link Ресурс подключения к базе данных
- * @return array|null
+ * @return array|null Возвращает список лотов, при отсутствии null
  */
 
 function getLotsWithoutWinner(mysqli $link): ?array
@@ -301,7 +301,7 @@ function addBet(mysqli $link, int $user, int $price, int $lot): void
 
 /**
  * Функция возвращает все ставки пользователя
- * @var mysqli $link
+ * @var mysqli $link Ресурс соединения с базой данных
  * @var int $id Id пользователя
  * @return array | null При наличии возвращает массив с данными о ставках
  */
@@ -344,9 +344,9 @@ function getLastBetOfLot(mysqli $link, int $lot): ?array
 
 /**
  * Функция возвращает данные победителя
- * @param mysqli $link
- * @param $id
- * @return array
+ * @param mysqli $link Ресурс соединения с базой данных
+ * @param int $id Идентификатор пользователя
+ * @return array Массив данных пользователя
  */
 function getWinner(mysqli $link, $id): array
 {
@@ -357,9 +357,9 @@ function getWinner(mysqli $link, $id): array
 
 /**
  * Функция добавляет победителя в базу данных
- * @param mysqli $link
- * @param int $user_id
- * @param int $lot_id
+ * @param mysqli $link Ресурс соединения с базой данных
+ * @param int $user_id Идентификатор пользователя
+ * @param int $lot_id Идентификатор лота
  * @return bool
  */
 
@@ -479,7 +479,7 @@ function getAllBetsOfLot(mysqli $link, int $lot): ?array
 /**
  * Функция добавляет в базу данных новый лот
  * @param mysqli $link Ресурс соединения с базой данных
- * @param array $data
+ * @param array $data Данные для вставки данных на место плейсхолдеров
  * @return ?int В случае успеха, возвращает id добавленного лота
  */
 
