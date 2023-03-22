@@ -35,7 +35,7 @@ $pagination = includeTemplate('pagination.php', [
     'getParam'          => $getParam,
 ]);
 
-$pageContent = includeTemplate('all-lots.php', [
+$pageContent = includeTemplate('lots.php', [
     'pagination'        => $pagination,
     'lots'              => $lots,
     'message'           => $message,

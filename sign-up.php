@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $menu = includeTemplate('menu.php', ['categories' => $categories]);
 
-$pageContent = includeTemplate('sign-up.php', [
+$pageContent = includeTemplate('sign.php', [
     'categories' => $categories,
     'formData'   => $formData,
     'errors'     => $errors,

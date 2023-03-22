@@ -38,7 +38,7 @@ $pagination = includeTemplate('pagination.php', [
     'getParam'          => $getParam,
 ]);
 
-$pageContent = includeTemplate('search.php', [
+$pageContent = includeTemplate('search-tmp.php', [
     'pagination' => $pagination,
     'message'    => $message,
     'search'     => $search,

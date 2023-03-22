@@ -14,7 +14,7 @@ $bets = getAllMyBets($link, $userId);
 
 $menu = includeTemplate('menu.php', ['categories' => $categories]);
 
-$pageContent = includeTemplate('my-bets.php', [
+$pageContent = includeTemplate('bets-tmp.php', [
     'bets'   => $bets,
     'userId' => $userId,
 ]);

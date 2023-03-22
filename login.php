@@ -27,7 +27,7 @@ $user = getUserByEmail($link, $formData['email']);
 }
 $menu = includeTemplate('menu.php', ['categories' => $categories]);
 
-$pageContent = includeTemplate('login.php', [
+$pageContent = includeTemplate('login-tmp.php', [
     'categories' => $categories,
     'formData'   => $formData,
     'errors'     => $errors,
