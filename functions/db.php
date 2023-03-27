@@ -200,22 +200,6 @@ function addUser(mysqli $link, array $formData): void
 }
 
 /**
- * Функция определяет победителя лота
- * @param mysqli $link Ресурс соединения с базой данных
- * @param int $user_id Идентификатор пользователя
- * @param int $lot_id Идентификатор лота
- * @return array|null Возвращает массив с данными о победителе или null
- */
-function getUserWinner(mysqli $link, int $user_id, int $lot_id): ?array
-{
-    $result = addWinner($link, $user_id, $lot_id);
-    if ($result) {
-        return getWinner($link, $user_id);
-    }
-    return null;
-}
-
-/**
  * Функция возвращает истекшие лоты без победителя
  * @param mysqli $link Ресурс подключения к базе данных
  * @return array|null Возвращает список лотов, при отсутствии null

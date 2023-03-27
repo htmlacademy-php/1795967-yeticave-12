@@ -20,7 +20,6 @@ $formData = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formData = filterFormFields($_POST);
     $errors = validateRegistrationForm($link, $formData);
-
     if (!($errors)) {
         $formData['password'] = password_hash(($formData["password"] ?? ''), PASSWORD_DEFAULT);
         addUser($link, $formData);

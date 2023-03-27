@@ -3,7 +3,7 @@
 /**
  * Функция валидации полей формы регистрации
  * @param mysqli $link Ресурс подключения к базе данных
- * @param  array $formData Данные из формы регистрации
+ * @param array $formData Данные из формы регистрации
  * @return array|null Возвращает массив с кодами ошибок
  */
 
@@ -22,32 +22,34 @@ function validateRegistrationForm(mysqli $link, array $formData): ?array
             return $errors;
         }
         unset($errors[$value]);
-}
-    return null;
-}
-
-/**
- * Функция проверки заполнения поля имя
- * @var string $name Данные из формы
- * @return string|null Возвращает код ошибки при наличии
- */
-
-function  validateRegistrationName(string $name): ?string
-{
-    if(empty($name)) {
-        return 'Введите имя';
     }
     return null;
 }
 
 /**
- * Функция проверки введенного email
- * @var mysqli $link Объект подключения к базе данных
- * @var string $email Данные из поля email
+ * Функция проверки заполнения поля имя
+ * @return string|null Возвращает код ошибки при наличии
+ * @var string $name Данные из формы
+ */
+
+function validateRegistrationName(string $name): ?string
+{
+    if (empty($name)) {
+        $error = 'Введите имя';
+    }
+    if (strlen($name) > 100) {
+        $error = 'Имя не должно превышать 100 символов';
+    }
+    return $error ?? null;
+}
+
+/**
+ * Функция проверки заполнения поля email
+ * @param string $email Данные из поля формы
  * @return string|null Возвращает код ошибки при наличии
  */
 
-function validateRegistrationEmail(mysqli $link, string $email): ?string
+function validateInputEmail(string $email): ?string
 {
     if (empty($email)) {
         return 'Введите ваш email';
@@ -56,12 +58,24 @@ function validateRegistrationEmail(mysqli $link, string $email): ?string
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return 'Введите корректный email';
     }
+    return null;
+}
 
+/**
+ * Функция проверки введенного email
+ * @param string $email Данные из поля email
+ * @param mysqli $link Объект подключения к базе данных
+ * @return string|null Возвращает код ошибки при наличии
+ */
+
+function validateRegistrationEmail(mysqli $link, string $email): ?string
+{
+    $error = validateInputEmail($email);
     $user = getUserByEmail($link, $email);
     if ($user) {
-        return 'Пользователь с таким email уже существует';
+        $error = 'Пользователь с таким email уже существует';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -73,13 +87,13 @@ function validateRegistrationEmail(mysqli $link, string $email): ?string
 function validateRegistrationPassword(string $password): ?string
 {
     if (empty($password)) {
-        return 'Введите пароль';
+        $error = 'введите пароль';
     }
 
     if (strlen($password) > 128) {
-        return 'Пароль не должен превышать 128 символов';
+        $error = 'пароль не должен превышать 128 символов';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -112,8 +126,8 @@ function validateLoginForm(mysqli $link, array $formData): ?array
     $errors = [];
     $required = ['email', 'password'];
 
-    $errors['email'] = validateLoginEmail($link, $formData['email']) ;
-    $errors['password'] = validateLoginPassword($link, $formData['email'], $formData['password']) ;
+    $errors['email'] = validateLoginEmail($link, $formData['email']);
+    $errors['password'] = validateLoginPassword($link, $formData['email'], $formData['password']);
 
     foreach ($required as $value) {
         if ($errors[$value]) {
@@ -133,19 +147,12 @@ function validateLoginForm(mysqli $link, array $formData): ?array
 
 function validateLoginEmail(mysqli $link, string $email): ?string
 {
-    if (empty($email)) {
-        return 'Введите ваш email';
-    }
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return 'Введите корректный email';
-    }
-
+    $error = validateInputEmail($email);
     $user = getUserByEmail($link, $email);
     if (!$user) {
-        return 'Пользователь с таким email не найден';
+        $error = 'Пользователь с таким email не найден';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -158,21 +165,14 @@ function validateLoginEmail(mysqli $link, string $email): ?string
 
 function validateLoginPassword(mysqli $link, string $email, string $password): ?string
 {
-    if (empty($password)) {
-        return 'Введите пароль';
-    }
-
-    if (strlen($password) > 128) {
-        return 'Пароль не должен превышать 128 символов';
-    }
-
+    $error = validateRegistrationPassword($password);
     $user = getUserByEmail($link, $email);
     if ($user) {
         if (!password_verify($password, $user['password'])) {
-            return 'Вы ввели неверный пароль';
+            $error = 'Вы ввели неверный пароль';
         }
     }
-    return null;
+    return $error ?? null;
 }
 
 

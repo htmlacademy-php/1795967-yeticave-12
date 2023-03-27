@@ -281,7 +281,7 @@ function pastDate(string $dateCreate): string
 
 function getQuotesForString(string $text): string
 {
-    return $text ? $text = '«' . $text . '»' : '';
+    return ('«' . $text . '»') ?? '';
 }
 
 /**
@@ -296,3 +296,4 @@ function isDateValid(string $date) : bool {
 
     return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
 }
+

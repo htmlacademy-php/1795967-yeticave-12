@@ -14,14 +14,15 @@ require_once __DIR__ . '/../bootstrap.php';
 
         <div class="form__item <?= isset($errors['name']) ? 'form__item--invalid' : '' ?>">
             <label for="name">Имя <sup>*</sup></label>
-            <input id="name" type="text" name="name" placeholder="Введите имя" value="<?= $formData['name'] ?? '' ?>">
+            <input id="name" type="text" name="name" placeholder="Введите имя" value="<?= $formData['name'] ?? '' ?>"
+                <?= (empty($_POST)) ? 'autofocus' : ''?>>
             <span class="form__error"><?= $errors['name'] ?></span>
         </div>
 
         <div class="form__item <?= isset($errors['email']) ? 'form__item--invalid' : '' ?>">
             <label for="email">E-mail <sup>*</sup></label>
             <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?= $formData['email'] ?? '' ?>">
-            <span class="form__error"><?= $errors['email'] ?? '' ?>></span>
+            <span class="form__error"><?= $errors['email'] ?? '' ?></span>
         </div>
 
         <div class="form__item <?= isset($errors['password']) ? 'form__item--invalid' : '' ?>">
