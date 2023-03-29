@@ -8,12 +8,13 @@
 
 ?>
 
-    <form class="form container <?= (!empty($errors)) ? 'form--invalid' : '' ?>" action="/login.php" method="post">
+    <form class="form container <?= (!empty($errors)) ? 'form--invalid' : '' ?>" action="/login.php" method="post" autocomplete="off">
         <h2>Вход</h2>
 
         <div class="form__item <?= isset($errors['email']) ? 'form__item--invalid' : '' ?>">
             <label for="email">E-mail <sup>*</sup></label>
-            <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?= $formData['email'] ?? '' ?>">
+            <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?= $formData['email'] ?? '' ?>"
+                <?= (empty($_POST)) ? 'autofocus' : ''?>>
             <span class="form__error"><?= $errors['email'] ?? '' ?></span>
         </div>
 

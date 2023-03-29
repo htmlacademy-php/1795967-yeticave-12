@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $bets = getAllBetsOfLot($link, $lot['id']);
 
-$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
+$menu = includeTemplate('menu.php', ['categories' => $categories]);
 
-$pageContent = includeTemplate('lot.php', [
+$pageContent = includeTemplate('lot-tmp.php', [
     'error'       => $error,
     'link'        => $link,
     'bets'        => $bets,

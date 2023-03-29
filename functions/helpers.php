@@ -1,6 +1,96 @@
 <?php
 
 /**
+ * Функция подсчета общего количества в пагинации
+ * @param int $itemsCount
+ * @param int $lotsPerPage
+ * @return int Возвращает общее количество страницы в пагинации
+ */
+
+function getTotalPagesCount(int $itemsCount, int $lotsPerPage): int
+{
+    return (int)ceil($itemsCount / $lotsPerPage);
+}
+
+/**
+ * Функция загружает файл в папку 'uploads/' и возвращает ссылку на загруженный файл
+ * @param array $file Массив с данными о файле
+ * @return string|null Если файл успешно загружен, возвращает ссылку на загруженный файл
+ */
+function uploadFile(array $file): ?string
+{
+    if (!empty($file['image']['name'])) {
+        $file_name = $file['image']['name'];
+        $file_temp = $file['image']['tmp_name'];
+        $file_path = UPLOAD_DIR . '/' . $file_name;
+        $file_status = move_uploaded_file($file_temp, $file_path);
+
+        if ($file_status) {
+            return 'uploads/' . $file_name;
+        } else {
+            exit('При загрузке файла, произошла критическая ошибка');
+        }
+    }
+    return null;
+}
+
+/**
+ * Функция фильтрации данных из формы добавления лота
+ * @param array $data Данные из формы
+ * @return array Возвращает отфильтрованный массив с данными
+ */
+
+function getLotFormData(array $data): array
+{
+    $formData = filterFormFields($data);
+
+    $formData['category_id'] = (int)$data['category_id'];
+    $formData['price'] = (int)$data['price'];
+    $formData['step'] = (int)$data['step'];
+
+    return $formData;
+}
+
+/**
+ * Функция фильтрации данных из формы добавления лота
+ * @param array $data Данные из формы
+ * @return array Возвращает отфильтрованный массив с данными
+ */
+
+function filterFormFields(array $data): array
+{
+    return array_map(function ($var) {
+        return htmlspecialchars($var, ENT_QUOTES);
+    }, $data);
+}
+
+/**
+ * Функция фильтрации поля поиска
+ * @param array $data Данные из формы поиска
+ * @return string Возвращает отфильтрованную строку поля поиска
+ */
+
+function filterSearchForm(array $data): string
+{
+    $data = filterFormFields($data);
+    return trim($data['search']);
+}
+
+/**
+ * Функция возвращает номер текущей страницы
+ * @param array $data Данные из GET параметров
+ * @return int При отсутствии номера возвращает по умолчанию 1
+ */
+
+function getCurrentPageNumber(array $data): int
+{
+    if (empty($data['page'])) {
+        return 1;
+    }
+    return (int) $data['page'];
+}
+
+/**
  * Функция возвращает оставшееся время до окончания размещения лота от текущего времени
  * @param string $finishDate Дата окончания размещения лота
  * @return array Возвращает массив [часы, минуты]
@@ -19,8 +109,9 @@ function timeLeft(string $finishDate): array
 }
 
 /**
- * @param int $price
- * @return string
+ * Функция возвращает цену удобочитаемом формате
+ * @param int $price Цена лота
+ * @return string Строка в заданном формате
  */
 
 function priceFormat(int $price): string
@@ -76,7 +167,6 @@ function timerResult(string $finishDate, int $Id, ?int $winnerId): string
     return match (true) {
         $Id === $winnerId => 'Ставка выиграла',
         strtotime($finishDate) <= time() => 'Торги окончены',
-//        strtotime($finishDate) > time() => timeLeft($finishDate),
         default => implode(':', timeLeft($finishDate)),
     };
 }
@@ -123,7 +213,6 @@ function includeTemplate(string $name, array $data = []): string
 /**
  * Возвращает корректную форму множественного числа
  * Ограничения: только для целых чисел
- *
  * Пример использования:
  * $remaining_minutes = 5;
  * echo "Я поставил таймер на {$remaining_minutes} " .
@@ -160,7 +249,6 @@ function getNounPluralForm(int $number, string $one, string $two, string $many):
 /**
  * Функция отображения даты создания ставки в удобочитаемом формате
  * @param string $dateCreate Дата создания ставки
- *
  * @return string Возвращает отформатированную строку с датой
  */
 
@@ -193,5 +281,19 @@ function pastDate(string $dateCreate): string
 
 function getQuotesForString(string $text): string
 {
-    return $text ? $text = '«' . $text . '»' : '';
+    return ('«' . $text . '»') ?? '';
 }
+
+/**
+ * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
+ * @param string $date Дата в виде строки
+ * @return bool  При совпадении с форматом 'ГГГГ-ММ-ДД' true, иначе false
+ */
+
+function isDateValid(string $date) : bool {
+    $format_to_check = 'Y-m-d';
+    $dateTimeObj = date_create_from_format($format_to_check, $date);
+
+    return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
+}
+

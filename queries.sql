@@ -50,7 +50,7 @@ VALUES ('2022-04-06', 11499, 2, 1),
 SELECT name
 FROM categories;
 
-# получить самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, название категории;
+# Получить самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, название категории;
 SELECT l.title, l.price, l.image, MAX(b.price), c.name
 FROM lots l
        JOIN categories c ON l.category_id = c.id
@@ -59,20 +59,20 @@ GROUP BY l.id, l.finish_date
 ORDER BY l.finish_date DESC
 LIMIT 3;
 
-# показать лот по его ID. Получите также название категории, к которой принадлежит лот;
+# Показать лот по его ID. Получите также название категории, к которой принадлежит лот;
 
 SELECT l.date_create, l.title, l.image, l.price, c.name AS categorylo
 FROM lots l
        JOIN categories c ON l.category_id = c.id
 WHERE l.id = 4;
 
-# обновить название лота по его идентификатору;
+# Обновить название лота по его идентификатору;
 
 UPDATE lots
 SET title = 'Курточка для сноуборда DC Mutiny Charocal'
 WHERE id = 5;
 
-# получить список ставок для лота по его идентификатору с сортировкой по дате;
+# Получить список ставок для лота по его идентификатору с сортировкой по дате;
 
 SELECT b.date_create, b.price, u.name, u.contact, l.title
 FROM bets b

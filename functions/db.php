@@ -105,8 +105,8 @@ function getCategories(mysqli $link): array
 
 /**
  * Функция получения названия выбранной категории
- * @var mysqli $link Ресурс соединения с базой данных
- * @var int $id Id категории
+ * @param  int $id Id категории
+ * @param  mysqli $link Ресурс соединения с базой данных
  * @return string Возвращает имя категории
  */
 
@@ -123,14 +123,14 @@ function getCategoryNameById(mysqli $link, int $id): string
 /**
  * Получение списка лотов
  * @param mysqli $link Ресурс соединения с базой данных
- * @var int $lotsPerPage
- * @var int $currentPageNumber
- * @return array
+ * @return array Возвращает список лотов
+ * @var int $currentPageNumber Номер текущей страницы
+ * @var int $lotsPerPage Количество лотов на странице
  */
 
 function getLots(mysqli $link, int $lotsPerPage, int $currentPageNumber): array
 {
-    $offset = ($currentPageNumber -1) * $lotsPerPage;
+    $offset = ($currentPageNumber - 1) * $lotsPerPage;
     $sql =
         "SELECT l.id, l.title, l.price, l.image, MAX(b.price) AS current_price, finish_date, c.name
         FROM lots l
@@ -153,8 +153,8 @@ function getLots(mysqli $link, int $lotsPerPage, int $currentPageNumber): array
 /**
  * Получение одного лота по id
  * @param mysqli $link Объект подключения к базе данных
- * @param int $id
- * @return ?array
+ * @param int $id Идентификатор лота
+ * @return ?array Массив данных лота, при отсутствии null
  */
 
 function getLot(mysqli $link, int $id): ?array
@@ -200,25 +200,9 @@ function addUser(mysqli $link, array $formData): void
 }
 
 /**
- * Функция определяет победителя лота
- * @param mysqli $link
- * @param int $user_id
- * @param int $lot_id
- * @return array|null Возвращает массив с данными о победителе или null
- */
-function getUserWinner(mysqli $link, int $user_id, int $lot_id): ?array
-{
-    $result = addWinner($link, $user_id, $lot_id);
-    if ($result) {
-        return getWinner($link, $user_id);
-    }
-    return null;
-}
-
-/**
  * Функция возвращает истекшие лоты без победителя
  * @param mysqli $link Ресурс подключения к базе данных
- * @return array|null
+ * @return array|null Возвращает список лотов, при отсутствии null
  */
 
 function getLotsWithoutWinner(mysqli $link): ?array
@@ -287,10 +271,10 @@ function addBet(mysqli $link, int $user, int $price, int $lot): void
 {
     $sql = "INSERT INTO bets (date_create, price, user_id, lot_id) VALUES (?, ?, ?, ?)";
     $data = [
-      date('Y-m-d H:i:s'),
-      $price,
-      $user,
-      $lot
+        date('Y-m-d H:i:s'),
+        $price,
+        $user,
+        $lot,
     ];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     $result = mysqli_stmt_execute($stmt);
@@ -301,8 +285,8 @@ function addBet(mysqli $link, int $user, int $price, int $lot): void
 
 /**
  * Функция возвращает все ставки пользователя
- * @var mysqli $link
- * @var int $id Id пользователя
+ * @param  int $id Id пользователя
+ * @param  mysqli $link Ресурс соединения с базой данных
  * @return array | null При наличии возвращает массив с данными о ставках
  */
 
@@ -344,11 +328,11 @@ function getLastBetOfLot(mysqli $link, int $lot): ?array
 
 /**
  * Функция возвращает данные победителя
- * @param mysqli $link
- * @param $id
- * @return array
+ * @param mysqli $link Ресурс соединения с базой данных
+ * @param int $id Идентификатор пользователя
+ * @return array Массив данных пользователя
  */
-function getWinner(mysqli $link, $id): array
+function getWinner(mysqli $link, int $id): array
 {
     $sql = "SELECT * FROM users WHERE id = $id";
     $result = mysqli_query($link, $sql);
@@ -357,9 +341,9 @@ function getWinner(mysqli $link, $id): array
 
 /**
  * Функция добавляет победителя в базу данных
- * @param mysqli $link
- * @param int $user_id
- * @param int $lot_id
+ * @param mysqli $link Ресурс соединения с базой данных
+ * @param int $user_id Идентификатор пользователя
+ * @param int $lot_id Идентификатор лота
  * @return bool
  */
 
@@ -384,7 +368,7 @@ function addWinner(mysqli $link, int $user_id, int $lot_id): bool
 
 function searchLots(mysqli $link, string $search, int $lotsPerPage, int $currentPageNumber): array
 {
-    $offset = ($currentPageNumber -1) * $lotsPerPage;
+    $offset = ($currentPageNumber - 1) * $lotsPerPage;
 
     $sql =
         "SELECT l.id, l.title, l.description, l.price, MAX(b.price) AS current_price, image,
@@ -432,7 +416,7 @@ function getCountLotsOpened(mysqli $link): ?int
 
 function getLotsByCategory(mysqli $link, int $category, int $lotsPerPage, int $currentPageNumber): array
 {
-    $offset = ($currentPageNumber -1) * $lotsPerPage;
+    $offset = ($currentPageNumber - 1) * $lotsPerPage;
 
     $sql =
         "SELECT l.id, l.title, l.description, l.price, MAX(b.price) AS current_price, image,
@@ -479,7 +463,7 @@ function getAllBetsOfLot(mysqli $link, int $lot): ?array
 /**
  * Функция добавляет в базу данных новый лот
  * @param mysqli $link Ресурс соединения с базой данных
- * @param array $data
+ * @param array $data Данные для вставки данных на место плейсхолдеров
  * @return ?int В случае успеха, возвращает id добавленного лота
  */
 
@@ -517,50 +501,37 @@ function addLot(mysqli $link, array $data): ?int
  * @return mysqli_stmt Подготовленное выражение
  */
 
-function db_get_prepare_stmt(mysqli $link, string $sql, array $data = []): mysqli_stmt
+function db_get_prepare_stmt(mysqli $link, string $sql, array $data): mysqli_stmt
 {
     $stmt = mysqli_prepare($link, $sql);
 
-    if ($stmt === false) {
+    if (!$stmt) {
         $errorMsg = 'Не удалось инициализировать подготовленное выражение: ' . mysqli_error($link);
         die($errorMsg);
     }
 
-    if ($data) {
         $types = '';
         $stmt_data = [];
 
         foreach ($data as $value) {
-            $type = 's';
-
             if (is_int($value)) {
-                $type = 'i';
-            } else {
-                if (is_string($value)) {
-                    $type = 's';
-                } else {
-                    if (is_double($value)) {
-                        $type = 'd';
-                    }
-                }
+                $types  .= 'i';
+            } elseif (is_string($value)) {
+                $types  .= 's';
+            } elseif (is_double($value)) {
+                $types  .= 'd';
             }
 
-            if ($type) {
-                $types .= $type;
-                $stmt_data[] = $value;
-            }
+            $stmt_data[] = $value;
         }
 
-        $values = array_merge([$stmt, $types], $stmt_data);
-
-        $func = 'mysqli_stmt_bind_param';
-        $func(...$values);
+        mysqli_stmt_bind_param($stmt, $types, ... $stmt_data);
 
         if (mysqli_errno($link) > 0) {
             $errorMsg = 'Не удалось связать подготовленное выражение с параметрами: ' . mysqli_error($link);
             die($errorMsg);
         }
-    }
     return $stmt;
 }
+
 

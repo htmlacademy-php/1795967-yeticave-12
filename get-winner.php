@@ -3,7 +3,7 @@
 /**
  * @var $config
  * @var $link
- *
+ * @var $userWinner
  */
 
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -18,7 +18,10 @@ if (!empty($lots)) {
     foreach ($lots as $lot) {
         $lastBet = getLastBetOfLot($link, $lot['lotId']);
         if (!empty($lastBet)) {
-            $userWinner = getUserWinner($link, $lastBet['user_id'], $lastBet['lot_id']);
+            $winner = addWinner($link, $lastBet['user_id'], $lastBet['lot_id']);
+            if (!empty($winner)) {
+                $userWinner = getWinner($link, $lastBet['user_id']) ?? null;
+            }
             $textHtml = includeTemplate('email.php', [
                 'lot'        => $lot,
                 'userWinner' => $userWinner,

@@ -20,7 +20,6 @@ $formData = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formData = filterFormFields($_POST);
     $errors = validateRegistrationForm($link, $formData);
-
     if (!($errors)) {
         $formData['password'] = password_hash(($formData["password"] ?? ''), PASSWORD_DEFAULT);
         addUser($link, $formData);
@@ -29,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
+$menu = includeTemplate('menu.php', ['categories' => $categories]);
 
-$pageContent = includeTemplate('sign-up.php', [
+$pageContent = includeTemplate('sign.php', [
     'categories' => $categories,
     'formData'   => $formData,
     'errors'     => $errors,

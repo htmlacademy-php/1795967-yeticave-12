@@ -45,7 +45,7 @@
                     </div>
                 </div>
 
-                <?php if (isset($_SESSION['user']) && ($_SESSION['user']['id'] != $lot['user_id'])): ?>
+                <?php if (isset($_SESSION['user']) && ($_SESSION['user']['id'] !== (int) $lot['user_id'])): ?>
                     <form class="lot-item__form" action="/lot.php?id=<?= $lot['id'] ?>" method="post"
                           autocomplete="off">
                         <p class="lot-item__form-item form__item <?= !empty($error) ? 'form__item--invalid' : null ?>">

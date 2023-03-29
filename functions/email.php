@@ -8,9 +8,10 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\Mailer;
 
 /**
- * @param array $userWinner
- * @param array $email
- * @param string $textHtml
+ * Функция отправляет сообщение победителю лота
+ * @param array $userWinner Данные победителя
+ * @param array $email Данные почтового сервера
+ * @param string $textHtml Сгенерированное сообщение для победителя
  * @return void
  * @throws TransportExceptionInterface
  */

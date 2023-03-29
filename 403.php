@@ -11,9 +11,9 @@ require_once __DIR__ . '/bootstrap.php';
 header("HTTP/1.1 403 Forbidden");
 header("Status: 403 Forbidden");
 
-$menu = includeTemplate('menu/menu.php', ['categories' => $categories]);
+$menu = includeTemplate('menu.php', ['categories' => $categories]);
 
-$pageContent = includeTemplate('403.php');
+$pageContent = includeTemplate('403-error.php');
 
 $footer = includeTemplate('footer.php', ['menu' => $menu]);
 
