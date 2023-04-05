@@ -183,7 +183,6 @@ function addUser(mysqli $link, array $formData): void
 {
     $sql = "INSERT INTO users (name, email, password, contact)
             VALUES (?, ?, ?, ?)";
-    /** @var string $password */
     $data = [
         $formData['name'],
         $formData['email'],
