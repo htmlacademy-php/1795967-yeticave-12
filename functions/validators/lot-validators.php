@@ -116,15 +116,14 @@ function validateLotStep(int $step): ?string
 
 function validateLotFinishDate(string $date): ?string
 {
+    $error = '';
     if (empty($date)) {
-        return 'Введите дату завершения торгов';
+        $error = 'Введите дату завершения торгов';
     }
-    if (isDateValid($date)) {
-        if ((strtotime($date) - time()) < 43200) {
-            return 'Дата должна быть больше одного дня';
-        }
+    if ((strtotime($date) - time()) < 43200) {
+        $error = 'Дата должна быть больше одного дня';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**

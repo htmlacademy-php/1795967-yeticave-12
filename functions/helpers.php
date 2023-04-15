@@ -15,10 +15,11 @@ function getTotalPagesCount(int $itemsCount, int $lotsPerPage): int
 /**
  * Функция загружает файл в папку 'uploads/' и возвращает ссылку на загруженный файл
  * @param array $file Массив с данными о файле
- * @return string|null Если файл успешно загружен, возвращает ссылку на загруженный файл
+ * @return string Если файл успешно загружен, возвращает ссылку на загруженный файл
  */
-function uploadFile(array $file): ?string
+function uploadFile(array $file): string
 {
+    $path = '';
     if (!empty($file['image']['name'])) {
         $file_name = $file['image']['name'];
         $file_temp = $file['image']['tmp_name'];
@@ -26,12 +27,12 @@ function uploadFile(array $file): ?string
         $file_status = move_uploaded_file($file_temp, $file_path);
 
         if ($file_status) {
-            return 'uploads/' . $file_name;
+            $path = 'uploads/' . $file_name;
         } else {
             exit('При загрузке файла, произошла критическая ошибка');
         }
     }
-    return null;
+    return $path;
 }
 
 /**
@@ -87,7 +88,7 @@ function getCurrentPageNumber(array $data): int
     if (empty($data['page'])) {
         return 1;
     }
-    return (int) $data['page'];
+    return (int)$data['page'];
 }
 
 /**
@@ -283,17 +284,3 @@ function getQuotesForString(string $text): string
 {
     return ('«' . $text . '»') ?? '';
 }
-
-/**
- * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
- * @param string $date Дата в виде строки
- * @return bool  При совпадении с форматом 'ГГГГ-ММ-ДД' true, иначе false
- */
-
-function isDateValid(string $date) : bool {
-    $format_to_check = 'Y-m-d';
-    $dateTimeObj = date_create_from_format($format_to_check, $date);
-
-    return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
-}
-

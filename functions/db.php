@@ -361,7 +361,7 @@ function addWinner(mysqli $link, int $user_id, int $lot_id): bool
  * @param mysqli $link Ресурс Соединения с базой данных
  * @param string $search Данные из формы поиска
  * @param int $lotsPerPage Количество лотов на странице
- * $@param int $currentPageNumber Номер текущей страницы
+ * @param int $currentPageNumber Номер текущей страницы
  * @return array Возвращает список лотов
  */
 
