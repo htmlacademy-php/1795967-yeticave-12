@@ -99,14 +99,15 @@ function getCurrentPageNumber(array $data): int
 
 function timeLeft(string $finishDate): array
 {
+    $time = [];
     $diff = strtotime($finishDate) - time();
     if ($diff <= 0) {
-        return ['00', '00'];
+        $time = ['00', '00'];
+    } else {
+        $time[] = str_pad(floor($diff / 3600), 2, "0", STR_PAD_LEFT);
+        $time[] = str_pad(floor(($diff % 3600) / 60), 2, "0", STR_PAD_LEFT);
     }
-    return [
-        str_pad(floor($diff / 3600), 2, "0", STR_PAD_LEFT),
-        str_pad(floor(($diff % 3600) / 60), 2, "0", STR_PAD_LEFT),
-    ];
+    return $time;
 }
 
 /**

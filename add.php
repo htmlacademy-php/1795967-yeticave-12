@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
+
 $menu = includeTemplate('menu.php', ['categories' => $categories]);
 
 $pageContent = includeTemplate('add-lot.php', [

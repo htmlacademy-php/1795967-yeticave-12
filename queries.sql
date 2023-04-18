@@ -1,4 +1,4 @@
-USE yeti_cave_67;
+USE yeticave;
 INSERT INTO categories
   (name, code)
 VALUES ('Доски и лыжи', 'boards'),

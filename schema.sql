@@ -1,13 +1,13 @@
-CREATE DATABASE yeti_cave_67
+CREATE DATABASE yeticave
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_general_ci;
 
-USE yeti_cave_67;
+USE yeticave;
 
 CREATE TABLE users
 (
   id          INT AUTO_INCREMENT PRIMARY KEY,
-  date_create DATETIME DEFAULT CURRENT_TIMESTAMP,
+  date_create DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
   email       VARCHAR(256) NOT NULL UNIQUE,
   name        VARCHAR(128) NOT NULL,
   password    VARCHAR(256) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE lots
   step        SMALLINT                           NOT NULL,
   user_id     INT                                NOT NULL,
   winner_id   INT,
-  category_id INT                                NOT NULL,
+  category_id SMALLINT                           NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id),
   FOREIGN KEY (winner_id) REFERENCES users (id),
   FOREIGN KEY (category_id) REFERENCES categories (id)
@@ -42,7 +42,7 @@ CREATE TABLE lots
 CREATE TABLE bets
 (
   id          INT AUTO_INCREMENT PRIMARY KEY,
-  date_create DATETIME DEFAULT CURRENT_TIMESTAMP,
+  date_create DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
   price       INT NOT NULL,
   user_id     INT NOT NULL,
   lot_id      INT NOT NULL,

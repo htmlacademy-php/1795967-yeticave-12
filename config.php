@@ -4,7 +4,7 @@ return [
         'host' => 'localhost',
         'user' => 'user',
         'password' => 1,
-        'database' => 'yeti_cave_67'
+        'database' => 'yeticave'
     ],
     'main' => [
         'name' => 'YetiCave',
