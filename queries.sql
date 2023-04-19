@@ -10,11 +10,11 @@ VALUES ('Доски и лыжи', 'boards'),
 
 INSERT INTO users
   (date_create, email, name, password, contact)
-VALUES ('2022-03-28', 'ivanivanov@mail.ru',
+VALUES ('2023-03-28', 'ivanivanov@mail.ru',
         'Ivan', 'qwerty', 'г. Екатеринбург'),
-       ('2022-03-29', 'vityavitin@mail.ru',
+       ('2023-03-29', 'vityavitin@mail.ru',
         'Vitya', '12345', 'г. Москва'),
-       ('2022-03-25', 'petyapetin@mail.ru',
+       ('2023-03-25', 'petyapetin@mail.ru',
         'Petya', '1234567', 'г. Москва');
 
 INSERT INTO lots
@@ -22,22 +22,22 @@ INSERT INTO lots
  finish_date, step, user_id, category_id)
 VALUES ('2022-03-28', '2014 Rossignol District Snowboard',
         'Лучший в своем сегменте',
-        'img/lot-1.jpg', 10999, '2022-04-24', 500, 1, 1),
+        'img/lot-1.jpg', 10999, '2023-04-24', 500, 1, 1),
        ('2022-03-30', 'DC Ply Mens 2016/2017 Snowboard',
         'Спортивный борд',
-        'img/lot-2.jpg', 15999, '2022-04-25', 1000, 1, 1),
+        'img/lot-2.jpg', 15999, '2023-04-25', 1000, 1, 1),
        ('2022-03-30', 'Крепления Union Contact Pro 2015 года размер L/XL',
         'Гарантия качества',
-        'img/lot-3.jpg', 8000, '2022-04-27', 300, 2, 1),
+        'img/lot-3.jpg', 8000, '2023-04-27', 300, 2, 1),
        ('2022-03-31', 'Ботинки для сноуборда DC Mutiny Charocal',
         'Отличные боты',
-        'img/lot-4.jpg', 10999, '2022-04-23', 500, 3, 3),
+        'img/lot-4.jpg', 10999, '2023-04-23', 500, 3, 3),
        ('2022-04-01', 'Куртка для сноуборда DC Mutiny Charocal',
         'Стиль и удобство',
-        'img/lot-5.jpg', 7500, '2022-04-23', 300, 1, 4),
+        'img/lot-5.jpg', 7500, '2023-04-23', 300, 1, 4),
        ('2022-04-01', 'Маска Oakley Canopy',
         'Надежная защита',
-        'img/lot-6.jpg', 5400, '2022-04-23', 300, 1, 6);
+        'img/lot-6.jpg', 5400, '2023-04-23', 300, 1, 6);
 
 INSERT INTO bets
   (date_create, price, user_id, lot_id)

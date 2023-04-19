@@ -130,16 +130,15 @@ function priceFormat(int $price): string
 
 function timerClass(string $finishDate, int $Id, ?int $winnerId): ?string
 {
-    $timerClass = '';
 
     if ($Id === $winnerId) {
         $timerClass = 'timer--win';
-    }
-    if (strtotime($finishDate) <= time()) {
+    } elseif (strtotime($finishDate) <= time()) {
         $timerClass = 'timer--end';
-    }
-    if ((int)timeLeft($finishDate)[0] < 1) {
+    } elseif ((int)timeLeft($finishDate)[0] < 1) {
         $timerClass = 'timer--finishing';
+    } else {
+        $timerClass = '';
     }
     return $timerClass;
 }
@@ -154,13 +153,12 @@ function timerClass(string $finishDate, int $Id, ?int $winnerId): ?string
 
 function ratesItemClass(string $finishDate, int $Id, ?int $winnerId): ?string
 {
-    $ratesItemClass = '';
-
-    if (strtotime($finishDate) <= time()) {
-        $ratesItemClass = 'rates__item--end';
-    }
     if ($Id === $winnerId) {
         $ratesItemClass = 'rates__item--win';
+    } elseif (strtotime($finishDate) <= time()) {
+        $ratesItemClass = 'rates__item--end';
+    } else {
+        $ratesItemClass = '';
     }
     return $ratesItemClass;
 }
@@ -175,12 +173,12 @@ function ratesItemClass(string $finishDate, int $Id, ?int $winnerId): ?string
 
 function timerResult(string $finishDate, int $Id, ?int $winnerId): string
 {
-    $timerResult = implode(':', timeLeft($finishDate));
     if ($Id === $winnerId) {
         $timerResult = 'Ставка выиграла';
-    }
-    if (strtotime($finishDate) <= time()) {
+    } elseif (strtotime($finishDate) <= time()) {
         $timerResult = 'Торги окончены';
+    } else {
+        $timerResult = implode(':', timeLeft($finishDate));
     }
     return $timerResult;
 }

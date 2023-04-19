@@ -5,19 +5,21 @@
  * @var $link
  * @var $pageTitle
  * @var $timeLeft
+ * @var $contact
  */
 
 require_once __DIR__ . '/bootstrap.php';
 
 $userId = getUserIdFromSession();
 $bets = getAllMyBets($link, $userId);
-var_dump($bets);
-var_dump($userId);
+$contact = getUserContactById($link, $userId);
+
 $menu = includeTemplate('menu.php', ['categories' => $categories]);
 
 $pageContent = includeTemplate('bets-tmp.php', [
-    'bets'   => $bets,
-    'userId' => $userId,
+    'bets'    => $bets,
+    'userId'  => $userId,
+    'contact' => $contact,
 ]);
 
 $footer = includeTemplate('footer.php', ['menu' => $menu]);

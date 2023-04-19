@@ -104,6 +104,23 @@ function getCategories(mysqli $link): array
 }
 
 /**
+ * Функция получения контактных данных пользователя
+ * @param  int $id Id пользователя
+ * @param  mysqli $link Ресурс соединения с базой данных
+ * @return string Возвращает строку с контактами
+ */
+
+function getUserContactById(mysqli $link, int $id): string
+{
+    $sql = "SELECT contact FROM users WHERE id = $id";
+    $result = mysqli_query($link, $sql);
+    if (!$result) {
+        dbError($link);
+    }
+    return mysqli_fetch_assoc($result)['contact'];
+}
+
+/**
  * Функция получения названия выбранной категории
  * @param  int $id Id категории
  * @param  mysqli $link Ресурс соединения с базой данных
