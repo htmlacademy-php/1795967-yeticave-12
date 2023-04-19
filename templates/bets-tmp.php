@@ -3,6 +3,7 @@
 /**
 * @var $bets
 * @var $userId
+ * @var $contact
 */
   ?>
 
@@ -15,7 +16,11 @@
                     <div class="rates__img">
                         <img src="<?= $bet['image'] ?>" width="54" height="40" alt="<?= $bet['title'] ?>">
                     </div>
-                    <h3 class="rates__title"><a href="lot.php?id=<?= $bet['lot_id'] ?>"><?= $bet['title'] ?>></a></h3>
+                    <div>
+                        <h3 class="rates__title"><a href="../lot.php?id=<?= $bet['lot_id'] ?>"><?= $bet['title'] ?>></a></h3>
+                        <p><?= ratesItemClass($bet['finish_date'], $userId, $bet['winner_id']) == 'rates__item--win' ? $contact : null ?></p>
+                    </div>
+
                 </td>
                 <td class="rates__category">
                     <?= $bet['category_name'] ?>

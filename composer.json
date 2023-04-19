@@ -5,15 +5,10 @@
       "email": "aleksder7708@yandex.ru"
     }
   ],
-  "require-dev": {
-    "phpunit/phpunit": "^9.5"
-  },
-  "scripts": {
-    "test": "./vendor/bin/phpunit tests --colors --bootstrap=bootstrap.php"
-  },
   "require": {
     "ext-mysqli": "*",
     "ext-mbstring": "*",
-    "symfony/mailer": "^6.2"
+    "symfony/mailer": "^6.2",
+    "ext-fileinfo": "*"
   }
 }

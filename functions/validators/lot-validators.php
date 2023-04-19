@@ -21,12 +21,10 @@ function validateLotForm(array $formData, array $files): array
     $errors['image'] = validateLotFile($files);
 
     foreach ($required as $val) {
-        if ($errors[$val]) {
-            return $errors;
+        if (empty($errors[$val])) {
+            unset($errors[$val]);
         }
-        unset($errors[$val]);
     }
-
     return array_filter($errors);
 }
 
@@ -39,12 +37,12 @@ function validateLotForm(array $formData, array $files): array
 function validateLotTitle(?string $name): ?string
 {
     if (empty($name)) {
-        return 'Название лота обязательно для заполнения';
+        $error = 'Название лота обязательно для заполнения';
     }
     if (mb_strlen($name) > 128) {
-        return 'Длина строки не может превышать 128 символов';
+        $error = 'Длина строки не может превышать 128 символов';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -56,9 +54,9 @@ function validateLotTitle(?string $name): ?string
 function validateLotCategory(string $id): ?string
 {
     if (empty($id)) {
-        return 'Необходимо выбрать категорию';
+        $error = 'Необходимо выбрать категорию';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -70,12 +68,12 @@ function validateLotCategory(string $id): ?string
 function validateLotDescription(?string $description): ?string
 {
     if (empty($description)) {
-        return 'Поле обязательно для заполнения';
+        $error = 'Поле обязательно для заполнения';
     }
     if (mb_strlen($description) > 1000) {
-        return 'Описание не может превышать 1000 символов';
+        $error = 'Описание не может превышать 1000 символов';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -87,10 +85,10 @@ function validateLotDescription(?string $description): ?string
 function validateLotPrice(int $price): ?string
 {
     if ($price <= 0) {
-        return 'Введите начальную цену';
+        $error = 'Введите начальную цену';
     }
     $_POST['price'] = $price;
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -102,10 +100,10 @@ function validateLotPrice(int $price): ?string
 function validateLotStep(int $step): ?string
 {
     if ($step <= 0) {
-        return 'Введите шаг ставки';
+        $error = 'Введите шаг ставки';
     }
     $_POST['step'] = $step;
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -117,14 +115,12 @@ function validateLotStep(int $step): ?string
 function validateLotFinishDate(string $date): ?string
 {
     if (empty($date)) {
-        return 'Введите дату завершения торгов';
+        $error = 'Введите дату завершения торгов';
     }
-    if (isDateValid($date)) {
-        if ((strtotime($date) - time()) < 43200) {
-            return 'Дата должна быть больше одного дня';
-        }
+    if ((strtotime($date) - time()) < 43200) {
+        $error = 'Дата должна быть больше одного дня';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -136,14 +132,22 @@ function validateLotFile(array $file): ?string
 {
     $file_types = ['image/jpeg', 'image/jpg', 'image/png'];
     $file_temp = $file['image']['tmp_name'];
+    $file_error = $file['image']['error'];
+    $file_name = $file['image']['name'];
+
+    if (empty($file_name)) {
+        $error = 'Добавьте изображение';
+    }
+
+    if ($file_error === 1) {
+        $error = 'Размер файла слишком велик';
+    }
 
     if (is_uploaded_file($file_temp)) {
         $file_type = mime_content_type($file_temp);
-        if (in_array($file_type, $file_types)) {
-            return null;
+        if (!in_array($file_type, $file_types)) {
+            $error = 'Неверный тип файла. Добавьте изображение в формате jpg или png';
         }
-
-        return 'Неверный тип файла. Добавьте изображение в формате jpg или png';
     }
-    return 'Добавьте изображение';
+    return $error ?? null;
 }

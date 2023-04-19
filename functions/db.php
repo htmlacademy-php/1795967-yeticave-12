@@ -104,6 +104,23 @@ function getCategories(mysqli $link): array
 }
 
 /**
+ * Функция получения контактных данных пользователя
+ * @param  int $id Id пользователя
+ * @param  mysqli $link Ресурс соединения с базой данных
+ * @return string Возвращает строку с контактами
+ */
+
+function getUserContactById(mysqli $link, int $id): string
+{
+    $sql = "SELECT contact FROM users WHERE id = $id";
+    $result = mysqli_query($link, $sql);
+    if (!$result) {
+        dbError($link);
+    }
+    return mysqli_fetch_assoc($result)['contact'];
+}
+
+/**
  * Функция получения названия выбранной категории
  * @param  int $id Id категории
  * @param  mysqli $link Ресурс соединения с базой данных
@@ -183,7 +200,6 @@ function addUser(mysqli $link, array $formData): void
 {
     $sql = "INSERT INTO users (name, email, password, contact)
             VALUES (?, ?, ?, ?)";
-    /** @var string $password */
     $data = [
         $formData['name'],
         $formData['email'],
@@ -362,7 +378,7 @@ function addWinner(mysqli $link, int $user_id, int $lot_id): bool
  * @param mysqli $link Ресурс Соединения с базой данных
  * @param string $search Данные из формы поиска
  * @param int $lotsPerPage Количество лотов на странице
- * $@param int $currentPageNumber Номер текущей страницы
+ * @param int $currentPageNumber Номер текущей страницы
  * @return array Возвращает список лотов
  */
 

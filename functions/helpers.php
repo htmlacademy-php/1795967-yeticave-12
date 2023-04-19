@@ -15,10 +15,11 @@ function getTotalPagesCount(int $itemsCount, int $lotsPerPage): int
 /**
  * Функция загружает файл в папку 'uploads/' и возвращает ссылку на загруженный файл
  * @param array $file Массив с данными о файле
- * @return string|null Если файл успешно загружен, возвращает ссылку на загруженный файл
+ * @return string Если файл успешно загружен, возвращает ссылку на загруженный файл
  */
-function uploadFile(array $file): ?string
+function uploadFile(array $file): string
 {
+    $path = '';
     if (!empty($file['image']['name'])) {
         $file_name = $file['image']['name'];
         $file_temp = $file['image']['tmp_name'];
@@ -26,12 +27,12 @@ function uploadFile(array $file): ?string
         $file_status = move_uploaded_file($file_temp, $file_path);
 
         if ($file_status) {
-            return 'uploads/' . $file_name;
+            $path = 'uploads/' . $file_name;
         } else {
             exit('При загрузке файла, произошла критическая ошибка');
         }
     }
-    return null;
+    return $path;
 }
 
 /**
@@ -59,9 +60,11 @@ function getLotFormData(array $data): array
 
 function filterFormFields(array $data): array
 {
-    return array_map(function ($var) {
-        return htmlspecialchars($var, ENT_QUOTES);
-    }, $data);
+    $dataFilter = [];
+    foreach ($data as $key => $val) {
+        $dataFilter[$key] = htmlspecialchars($val, ENT_QUOTES);
+    }
+    return $dataFilter;
 }
 
 /**
@@ -84,10 +87,7 @@ function filterSearchForm(array $data): string
 
 function getCurrentPageNumber(array $data): int
 {
-    if (empty($data['page'])) {
-        return 1;
-    }
-    return (int) $data['page'];
+    return !empty($data['page']) ? (int)$data['page'] : 1;
 }
 
 /**
@@ -98,14 +98,15 @@ function getCurrentPageNumber(array $data): int
 
 function timeLeft(string $finishDate): array
 {
+    $time = [];
     $diff = strtotime($finishDate) - time();
     if ($diff <= 0) {
-        return ['00', '00'];
+        $time = ['00', '00'];
+    } else {
+        $time[] = str_pad(floor($diff / 3600), 2, "0", STR_PAD_LEFT);
+        $time[] = str_pad(floor(($diff % 3600) / 60), 2, "0", STR_PAD_LEFT);
     }
-    return [
-        str_pad(floor($diff / 3600), 2, "0", STR_PAD_LEFT),
-        str_pad(floor(($diff % 3600) / 60), 2, "0", STR_PAD_LEFT),
-    ];
+    return $time;
 }
 
 /**
@@ -129,12 +130,17 @@ function priceFormat(int $price): string
 
 function timerClass(string $finishDate, int $Id, ?int $winnerId): ?string
 {
-    return match (true) {
-        $Id === $winnerId => 'timer--win',
-        strtotime($finishDate) <= time() => 'timer--end',
-        (int)timeLeft($finishDate)[0] < 1 => 'timer--finishing',
-        default => '',
-    };
+
+    if ($Id === $winnerId) {
+        $timerClass = 'timer--win';
+    } elseif (strtotime($finishDate) <= time()) {
+        $timerClass = 'timer--end';
+    } elseif ((int)timeLeft($finishDate)[0] < 1) {
+        $timerClass = 'timer--finishing';
+    } else {
+        $timerClass = '';
+    }
+    return $timerClass;
 }
 
 /**
@@ -147,11 +153,14 @@ function timerClass(string $finishDate, int $Id, ?int $winnerId): ?string
 
 function ratesItemClass(string $finishDate, int $Id, ?int $winnerId): ?string
 {
-    return match (true) {
-        $Id === $winnerId => 'rates__item--win',
-        strtotime($finishDate) <= time() => 'rates__item--end',
-        default => '',
-    };
+    if ($Id === $winnerId) {
+        $ratesItemClass = 'rates__item--win';
+    } elseif (strtotime($finishDate) <= time()) {
+        $ratesItemClass = 'rates__item--end';
+    } else {
+        $ratesItemClass = '';
+    }
+    return $ratesItemClass;
 }
 
 /**
@@ -164,11 +173,14 @@ function ratesItemClass(string $finishDate, int $Id, ?int $winnerId): ?string
 
 function timerResult(string $finishDate, int $Id, ?int $winnerId): string
 {
-    return match (true) {
-        $Id === $winnerId => 'Ставка выиграла',
-        strtotime($finishDate) <= time() => 'Торги окончены',
-        default => implode(':', timeLeft($finishDate)),
-    };
+    if ($Id === $winnerId) {
+        $timerResult = 'Ставка выиграла';
+    } elseif (strtotime($finishDate) <= time()) {
+        $timerResult = 'Торги окончены';
+    } else {
+        $timerResult = implode(':', timeLeft($finishDate));
+    }
+    return $timerResult;
 }
 
 /**
@@ -199,15 +211,14 @@ function includeTemplate(string $name, array $data = []): string
     $name = 'templates/' . $name;
     $result = '';
 
-    if (!is_readable($name)) {
-        return $result;
+    if (is_readable($name)) {
+        ob_start();
+        extract($data);
+        require $name;
+
+        $result = ob_get_clean();
     }
-
-    ob_start();
-    extract($data);
-    require $name;
-
-    return ob_get_clean();
+    return $result;
 }
 
 /**
@@ -223,33 +234,28 @@ function includeTemplate(string $name, array $data = []): string
  *         'минут'
  *     );
  * Результат: "Я поставил таймер на 5 минут"
- *
  * @param int $number Число, по которому вычисляем форму множественного числа
  * @param string $one Форма единственного числа: яблоко, час, минута
  * @param string $two Форма множественного числа для 2, 3, 4: яблока, часа, минуты
- * @param string $many Форма множественного числа для остальных чисел
- *
- * @return string Рассчитанная форма множественного числа
- * j */
+ */
 function getNounPluralForm(int $number, string $one, string $two, string $many): string
 {
-    $number = (int)$number;
     $mod10 = $number % 10;
-    $mod100 = $number % 100;
+    $result = $many;
 
-    return match (true) {
-        $mod100 >= 11 && $mod100 <= 20 => $many,
-        $mod10 > 5 => $many,
-        $mod10 === 1 => $one,
-        $mod10 >= 2 && $mod10 <= 4 => $two,
-        default => $many
-    };
+    if ($mod10 === 1) {
+        $result = $one;
+    }
+    if ($mod10 >= 2 && $mod10 <= 4) {
+        $result = $two;
+    }
+    return $result;
 }
 
 /**
  * Функция отображения даты создания ставки в удобочитаемом формате
- * @param string $dateCreate Дата создания ставки
- * @return string Возвращает отформатированную строку с датой
+ * @param string $dateCreate дата создания ставки
+ * @return string возвращает отформатированную строку с датой
  */
 
 function pastDate(string $dateCreate): string
@@ -260,40 +266,27 @@ function pastDate(string $dateCreate): string
     $minutes = floor(($time % 3600) / 60);
     $past_date = date_create($dateCreate);
 
-    return match (true) {
-        $minutes < 1 => 'Только что',
-        $hours < 1 => $minutes . ' ' . getNounPluralForm($minutes, 'минуту', 'минуты', 'минут') . ' ' . 'назад',
-        ($hours >= 1) && ($hours < 24) => $hours . ' ' . getNounPluralForm(
-                $hours,
-                'час',
-                'часа',
-                'часов'
-            ) . ' ' . 'назад',
-        default => date_format($past_date, 'd.m.y в H:i')
-    };
+    $result = date_format($past_date, 'd.m.y в h:i');
+
+    if ($minutes < 1) {
+        $result = 'только что';
+    }
+    if ($hours < 1) {
+        $result = $minutes . ' ' . getNounPluralForm($minutes, 'минуту', 'минуты', 'минут') . ' ' . 'назад';
+    }
+    if (($hours >= 1) && ($hours < 24)) {
+        $result = $hours . ' ' . getNounPluralForm($hours, 'час', 'часа', 'часов') . ' ' . 'назад';
+    }
+    return $result;
 }
 
 /**
  * Функция заключает текст в кавычки (текст => <<текст>>)
- * @param string $text Исходный текст
- * @return string Текст, заключенный в кавычки
+ * @param string $text исходный текст
+ * @return string текст, заключенный в кавычки
  */
 
 function getQuotesForString(string $text): string
 {
     return ('«' . $text . '»') ?? '';
 }
-
-/**
- * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
- * @param string $date Дата в виде строки
- * @return bool  При совпадении с форматом 'ГГГГ-ММ-ДД' true, иначе false
- */
-
-function isDateValid(string $date) : bool {
-    $format_to_check = 'Y-m-d';
-    $dateTimeObj = date_create_from_format($format_to_check, $date);
-
-    return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
-}
-
