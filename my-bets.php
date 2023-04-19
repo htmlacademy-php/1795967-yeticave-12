@@ -11,7 +11,8 @@ require_once __DIR__ . '/bootstrap.php';
 
 $userId = getUserIdFromSession();
 $bets = getAllMyBets($link, $userId);
-
+var_dump($bets);
+var_dump($userId);
 $menu = includeTemplate('menu.php', ['categories' => $categories]);
 
 $pageContent = includeTemplate('bets-tmp.php', [

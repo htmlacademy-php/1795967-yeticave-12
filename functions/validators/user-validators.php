@@ -17,13 +17,12 @@ function validateRegistrationForm(mysqli $link, array $formData): ?array
     $errors['password'] = validateRegistrationPassword($formData['password']);
     $errors['contact'] = validateRegistrationContact($formData['contact']);
 
-    foreach ($required as $value) {
-        if ($errors[$value]) {
-            return $errors;
+    foreach ($required as $val) {
+        if (empty($errors[$val])) {
+            unset($errors[$val]);
         }
-        unset($errors[$value]);
     }
-    return null;
+    return array_filter($errors);
 }
 
 /**
@@ -52,13 +51,12 @@ function validateRegistrationName(string $name): ?string
 function validateInputEmail(string $email): ?string
 {
     if (empty($email)) {
-        return 'Введите ваш email';
+        $error = 'Введите ваш email';
     }
-
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return 'Введите корректный email';
+        $error = 'Введите корректный email';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -105,13 +103,13 @@ function validateRegistrationPassword(string $password): ?string
 function validateRegistrationContact(string $contact): ?string
 {
     if (empty($contact)) {
-        return 'Поле необходимо заполнить';
+        $error = 'Поле необходимо заполнить';
     }
 
     if (strlen($contact) > 256) {
-        return 'Запись не должна превышать 256 символов';
+        $error = 'Запись не должна превышать 256 символов';
     }
-    return null;
+    return $error ?? null;
 }
 
 /**
@@ -129,13 +127,12 @@ function validateLoginForm(mysqli $link, array $formData): ?array
     $errors['email'] = validateLoginEmail($link, $formData['email']);
     $errors['password'] = validateLoginPassword($link, $formData['email'], $formData['password']);
 
-    foreach ($required as $value) {
-        if ($errors[$value]) {
-            return $errors;
+    foreach ($required as $val) {
+        if (empty($errors[$val])) {
+            unset($errors[$val]);
         }
-        unset($errors[$value]);
     }
-    return null;
+    return $errors ?? null;
 }
 
 /**
@@ -174,25 +171,3 @@ function validateLoginPassword(mysqli $link, string $email, string $password): ?
     }
     return $error ?? null;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
